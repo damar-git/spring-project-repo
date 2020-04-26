@@ -1,4 +1,4 @@
-INSERT INTO USER (USERNAME, EMAIL_ADDRESS, ACTIVE) VALUES('LadyJustice', 'master@email.com', 1);
-INSERT INTO USER (USERNAME, EMAIL_ADDRESS, ACTIVE) VALUES('Heisenberg', 'myname@email.com', 1);
-INSERT INTO USER (USERNAME, EMAIL_ADDRESS, ACTIVE) VALUES('HardenJ', 'thebeard@email.com', 0);
+INSERT INTO T_USER (USERNAME, EMAIL_ADDRESS, ACTIVE) VALUES('LadyJustice', 'master@email.com', 1);
+INSERT INTO T_USER (USERNAME, EMAIL_ADDRESS, ACTIVE) VALUES('Heisenberg', 'myname@email.com', 1);
+INSERT INTO T_USER (USERNAME, EMAIL_ADDRESS, ACTIVE) VALUES('HardenJ', 'thebeard@email.com', 0);
 
