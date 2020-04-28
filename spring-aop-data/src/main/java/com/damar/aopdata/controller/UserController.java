@@ -3,7 +3,9 @@ package com.damar.aopdata.controller;
 
 import com.damar.aopdata.exception.UserNotFoundException;
 import com.damar.aopdata.api.UserApi;
-import com.damar.aopdata.model.UserServiceResponse;
+import com.damar.aopdata.model.User;
+import com.damar.aopdata.model.response.UserServiceAllResponse;
+import com.damar.aopdata.model.response.UserServiceResponse;
 import com.damar.aopdata.service.UserService;
 import com.damar.aopdata.utils.UserServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,61 @@ public class UserController implements UserApi {
         }
         userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
         return ResponseEntity.ok(userServiceResponse);
+    }
+
+    @Override
+    public ResponseEntity<UserServiceAllResponse> getAllUser() {
+        UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
+        try {
+            userServiceAllResponse.setUserList(userService.getAll());
+        } catch (Exception e) {
+            userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return new ResponseEntity<>(userServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<UserServiceResponse> updateUser(User user) {
+        UserServiceResponse userServiceResponse = new UserServiceResponse();
+        try {
+            userServiceResponse.setUser(userService.updateUser(user));
+        } catch (UserNotFoundException e) {
+            userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.NOT_FOUND));
+            return new ResponseEntity<>(userServiceResponse, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return new ResponseEntity<>(userServiceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(userServiceResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<UserServiceResponse> saveUser(User user) {
+        UserServiceResponse userServiceResponse = new UserServiceResponse();
+        try {
+            userServiceResponse.setUser(userService.saveUser(user));
+        } catch (Exception e) {
+            userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return new ResponseEntity<>(userServiceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(userServiceResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<UserServiceResponse> deleteUser(Long id) {
+        UserServiceResponse userServiceResponse = new UserServiceResponse();
+        try {
+            userService.deleteUser(id);
+        } catch (UserNotFoundException e) {
+            userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.NOT_FOUND));
+            return new ResponseEntity<>(userServiceResponse, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return new ResponseEntity<>(userServiceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        userServiceResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(userServiceResponse, HttpStatus.OK);
     }
 
 }

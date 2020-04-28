@@ -1,5 +1,7 @@
-package com.damar.aopdata.model;
+package com.damar.aopdata.model.response;
 
+import com.damar.aopdata.model.User;
+import com.damar.aopdata.model.UserServiceOutcome;
 import lombok.Data;
 
 @Data
