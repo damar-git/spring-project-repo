@@ -17,9 +17,10 @@ public class UserEntity {
     @Column(name = "USERNAME")
     private String username;
 
-    @Column(name = "EMAIL_ADDRESS")
-    private String email;
-
     @Column(name = "ACTIVE")
     private Boolean active;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
+    private ContactEntity contact;
 }
