@@ -21,6 +21,6 @@ public class UserEntity {
     private Boolean active;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "CONTACT_ID")
     private ContactEntity contact;
 }
