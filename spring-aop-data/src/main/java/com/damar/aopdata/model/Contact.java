@@ -9,4 +9,6 @@ public class Contact {
 
     private String email;
 
+    private Integer age;
+
 }

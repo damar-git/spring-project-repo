@@ -16,4 +16,8 @@ public class ContactEntity {
 
     @Column(name = "EMAIL_ADDRESS")
     private String email;
+
+    @Column(name = "AGE")
+    private Integer age;
+
 }
