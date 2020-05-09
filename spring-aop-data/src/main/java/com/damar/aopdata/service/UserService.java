@@ -10,11 +10,13 @@ public interface UserService {
 
     User getById(Long id) throws UserNotFoundException;
 
-    List<User> getAll();
+    List<User> getAll(Boolean isActive);
 
     User updateUser(User user) throws UserNotFoundException;
 
     User saveUser(User user);
 
     void deleteUser(Long id) throws UserNotFoundException;
+
+    List<User> getAllByMinMaxAge(Integer minAge, Integer maxAge, Boolean equal);
 }

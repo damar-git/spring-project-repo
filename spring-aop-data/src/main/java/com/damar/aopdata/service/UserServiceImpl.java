@@ -36,8 +36,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        List<UserEntity> userEntityList = userRepository.findAll();
+    public List<User> getAll(Boolean isActive) {
+        List<UserEntity> userEntityList;
+
+        if (BooleanUtils.isTrue(isActive))
+            userEntityList = userRepository.findByActiveTrue();
+        else if (BooleanUtils.isFalse(isActive))
+            userEntityList = userRepository.findByActiveFalse();
+        else
+            userEntityList = userRepository.findAll();
+
         List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
                 .collect(Collectors.toList());
         return userList;
@@ -63,6 +71,21 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(toDelete))
             throw new UserNotFoundException();
         userRepository.delete(toDelete);
+    }
+
+    @Override
+    public List<User> getAllByMinMaxAge(Integer minAge, Integer maxAge, Boolean equal) {
+        List<UserEntity> userEntityList;
+
+        if (BooleanUtils.isTrue(equal))
+            userEntityList = userRepository.findByContact_AgeGreaterThanEqualAndContact_AgeLessThanEqual(minAge, maxAge);
+        else
+            userEntityList = userRepository.findByContact_AgeGreaterThanAndContact_AgeLessThan(minAge, maxAge);
+
+        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
+                .collect(Collectors.toList());
+
+        return userList;
     }
 
     private boolean checkIfUserExists(Long userId) {
