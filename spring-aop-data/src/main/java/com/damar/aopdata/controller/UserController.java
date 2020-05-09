@@ -39,15 +39,22 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<UserServiceResponse> getUserByUsername(String username) {
+    public ResponseEntity<UserServiceAllResponse> getAllUserByName(String name) {
+        UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
+        try {
+            userServiceAllResponse.setUserList(userService.getUserByName(name));
+        } catch (Exception e) {
+            userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userServiceAllResponse);
+        }
         return null;
     }
 
     @Override
-    public ResponseEntity<UserServiceAllResponse> getAllUser(Boolean isActive) {
+    public ResponseEntity<UserServiceAllResponse> getAllUser(Integer age, Boolean isActive) {
         UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
         try {
-            userServiceAllResponse.setUserList(userService.getAll(isActive));
+            userServiceAllResponse.setUserList(userService.getAll(age, isActive));
         } catch (Exception e) {
             userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return new ResponseEntity<>(userServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,6 +62,19 @@ public class UserController implements UserApi {
         userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
     }
+
+//    @Override
+//    public ResponseEntity<UserServiceAllResponse> getAllUserByAgeAndActive(Integer age, Boolean isActive) {
+//        UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
+//        try {
+//            userServiceAllResponse.setUserList(userService.getAllUserByAgeAndActive(age, isActive));
+//        } catch (Exception e) {
+//            userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+//            return new ResponseEntity<>(userServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
+//        return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
+//    }
 
     public ResponseEntity<UserServiceResponse> updateUser(User user) {
         UserServiceResponse userServiceResponse = new UserServiceResponse();
@@ -99,7 +119,7 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<UserServiceAllResponse> getAllByMinMaxAge(Integer maxAge, Integer minAge, Boolean equal) {
+    public ResponseEntity<UserServiceAllResponse> getAllUserByMinMaxAge(Integer maxAge, Integer minAge, Boolean equal) {
         UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
         try {
             userServiceAllResponse.setUserList(userService.getAllByMinMaxAge(minAge, maxAge, equal));

@@ -2,9 +2,9 @@ package com.damar.aopdata.service;
 
 
 import com.damar.aopdata.exception.UserNotFoundException;
-import com.damar.aopdata.repository.entity.UserEntity;
 import com.damar.aopdata.model.User;
 import com.damar.aopdata.repository.UserRepository;
+import com.damar.aopdata.repository.entity.UserEntity;
 import org.apache.commons.lang3.BooleanUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +36,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll(Boolean isActive) {
+    public List<User> getAll(Integer age, Boolean isActive) {
         List<UserEntity> userEntityList;
 
-        if (BooleanUtils.isTrue(isActive))
-            userEntityList = userRepository.findByActiveTrue();
-        else if (BooleanUtils.isFalse(isActive))
-            userEntityList = userRepository.findByActiveFalse();
-        else
-            userEntityList = userRepository.findAll();
+        if (Objects.nonNull(isActive)) {
+            if (Objects.nonNull(age)) {
+                userEntityList = userRepository.findByActiveAndContact_Age(isActive, age);
+            } else {
+                if (BooleanUtils.isTrue(isActive))
+                    userEntityList = userRepository.findByActiveTrue();
+                else
+                    userEntityList = userRepository.findByActiveFalse();
+            }
+        } else {
+            if (Objects.nonNull(age))
+                userEntityList = userRepository.findByContact_Age(age);
+            else
+                userEntityList = userRepository.findAll();
+        }
 
         List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
                 .collect(Collectors.toList());
@@ -81,6 +90,28 @@ public class UserServiceImpl implements UserService {
             userEntityList = userRepository.findByContact_AgeGreaterThanEqualAndContact_AgeLessThanEqual(minAge, maxAge);
         else
             userEntityList = userRepository.findByContact_AgeGreaterThanAndContact_AgeLessThan(minAge, maxAge);
+
+        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
+                .collect(Collectors.toList());
+
+        return userList;
+    }
+
+    @Override
+    public List<User> getUserByName(String name) {
+        List<UserEntity> userEntityList = userRepository.findByName(name);
+        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
+                .collect(Collectors.toList());
+        return userList;
+    }
+
+    @Override
+    public List<User> getAllUserByAgeAndActive(Integer age, Boolean isActive) {
+        List<UserEntity> userEntityList;
+        if (Objects.nonNull(isActive))
+            userEntityList = userRepository.findByActiveAndContact_Age(isActive, age);
+        else
+            userEntityList = userRepository.findByContact_Age(age);
 
         List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
                 .collect(Collectors.toList());

@@ -14,8 +14,8 @@ public class UserEntity {
     @Column(name = "USER_ID")
     private long userId;
 
-    @Column(name = "USERNAME")
-    private String username;
+    @Column(name = "NAME")
+    private String name;
 
     @Column(name = "ACTIVE")
     private Boolean active;

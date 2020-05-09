@@ -7,7 +7,7 @@ public class User {
 
     private long userId;
 
-    private String username;
+    private String name;
 
     private Boolean active;
 
