@@ -1,4 +1,4 @@
-package com.damar.aopdata.model;
+package com.damar.aopdata.model.response;
 
 import lombok.Data;
 

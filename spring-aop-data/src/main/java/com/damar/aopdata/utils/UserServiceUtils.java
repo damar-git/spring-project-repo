@@ -1,6 +1,6 @@
 package com.damar.aopdata.utils;
 
-import com.damar.aopdata.model.UserServiceOutcome;
+import com.damar.aopdata.model.response.UserServiceOutcome;
 import org.springframework.http.HttpStatus;
 
 public class UserServiceUtils {
