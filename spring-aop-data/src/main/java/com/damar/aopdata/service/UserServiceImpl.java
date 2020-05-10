@@ -105,20 +105,6 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
-    @Override
-    public List<User> getAllUserByAgeAndActive(Integer age, Boolean isActive) {
-        List<UserEntity> userEntityList;
-        if (Objects.nonNull(isActive))
-            userEntityList = userRepository.findByActiveAndContact_Age(isActive, age);
-        else
-            userEntityList = userRepository.findByContact_Age(age);
-
-        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
-                .collect(Collectors.toList());
-
-        return userList;
-    }
-
     private boolean checkIfUserExists(Long userId) {
         return userRepository.existsById(userId);
     }

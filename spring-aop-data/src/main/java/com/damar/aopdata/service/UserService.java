@@ -22,5 +22,4 @@ public interface UserService {
 
     List<User> getUserByName(String name);
 
-    List<User> getAllUserByAgeAndActive(Integer age, Boolean isActive);
 }

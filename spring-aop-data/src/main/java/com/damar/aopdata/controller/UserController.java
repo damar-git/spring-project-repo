@@ -47,7 +47,8 @@ public class UserController implements UserApi {
             userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userServiceAllResponse);
         }
-        return null;
+        userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
     }
 
     @Override
@@ -62,19 +63,6 @@ public class UserController implements UserApi {
         userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
     }
-
-//    @Override
-//    public ResponseEntity<UserServiceAllResponse> getAllUserByAgeAndActive(Integer age, Boolean isActive) {
-//        UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
-//        try {
-//            userServiceAllResponse.setUserList(userService.getAllUserByAgeAndActive(age, isActive));
-//        } catch (Exception e) {
-//            userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
-//            return new ResponseEntity<>(userServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
-//        return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
-//    }
 
     public ResponseEntity<UserServiceResponse> updateUser(User user) {
         UserServiceResponse userServiceResponse = new UserServiceResponse();
