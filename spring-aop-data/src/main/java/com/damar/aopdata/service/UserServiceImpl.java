@@ -43,12 +43,12 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(isActive)) {
             if (Objects.nonNull(age)) {
                 if (StringUtils.isNotBlank(name))
-                    userEntityList = userRepository.findByActiveAndContact_AgeAndName(isActive, age, name);
+                    userEntityList = userRepository.findByActiveAndContact_AgeAndNameContainingIgnoreCase(isActive, age, name);
                 else
                     userEntityList = userRepository.findByActiveAndContact_Age(isActive, age);
             } else {
                 if (StringUtils.isNotBlank(name)) {
-                    userEntityList = userRepository.findByActiveAndName(isActive, name);
+                    userEntityList = userRepository.findByActiveAndNameContainingIgnoreCase(isActive, name);
                 } else {
                     if (BooleanUtils.isTrue(isActive))
                         userEntityList = userRepository.findByActiveTrue();
@@ -59,20 +59,19 @@ public class UserServiceImpl implements UserService {
         } else {
             if (Objects.nonNull(age)) {
                 if (StringUtils.isNotBlank(name))
-                    userEntityList = userRepository.findByContact_AgeAndName(age, name);
+                    userEntityList = userRepository.findByContact_AgeAndNameContainingIgnoreCase(age, name);
                 else
                     userEntityList = userRepository.findByContact_Age(age);
             } else {
                 if (StringUtils.isNotBlank(name))
-                    userEntityList = userRepository.findByName(name);
+                    userEntityList = userRepository.findByNameContainingIgnoreCase(name);
                 else
                     userEntityList = userRepository.findAll();
             }
         }
 
-        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
+        return userEntityList.stream().map(entity -> mapper.map(entity, User.class))
                 .collect(Collectors.toList());
-        return userList;
     }
 
     @Override
@@ -106,10 +105,8 @@ public class UserServiceImpl implements UserService {
         else
             userEntityList = userRepository.findByContact_AgeGreaterThanAndContact_AgeLessThan(minAge, maxAge);
 
-        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
+        return userEntityList.stream().map(entity -> mapper.map(entity, User.class))
                 .collect(Collectors.toList());
-
-        return userList;
     }
 
     private boolean checkIfUserExists(Long userId) {

@@ -38,11 +38,11 @@ public interface UserApi {
 
     @GetMapping(value = "/all/age", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserServiceAllResponse> getAllUserByMinMaxAge(@ApiParam(value = "the user max age", name = "maxAge")
-                                                             @RequestParam(value = "maxAge") Integer maxAge,
-                                                             @ApiParam(value = "the user min age", name = "minAge")
-                                                             @RequestParam(value = "minAge") Integer minAge,
-                                                             @ApiParam(value = "indicates whether the age input value should be included or not",
-                                                                     name = "equal")
-                                                             @RequestParam(value = "equal") Boolean equal);
+                                                                 @RequestParam(value = "maxAge") Integer maxAge,
+                                                                 @ApiParam(value = "the user min age", name = "minAge")
+                                                                 @RequestParam(value = "minAge") Integer minAge,
+                                                                 @ApiParam(value = "indicates whether the age input value should be included or not",
+                                                                         name = "equal")
+                                                                 @RequestParam(value = "equal") Boolean equal);
 
 }
