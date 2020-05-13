@@ -39,23 +39,10 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<UserServiceAllResponse> getAllUserByName(String name) {
+    public ResponseEntity<UserServiceAllResponse> getAllUser(Integer age, String name, Boolean isActive) {
         UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
         try {
-            userServiceAllResponse.setUserList(userService.getUserByName(name));
-        } catch (Exception e) {
-            userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userServiceAllResponse);
-        }
-        userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.OK));
-        return new ResponseEntity<>(userServiceAllResponse, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<UserServiceAllResponse> getAllUser(Integer age, Boolean isActive) {
-        UserServiceAllResponse userServiceAllResponse = new UserServiceAllResponse();
-        try {
-            userServiceAllResponse.setUserList(userService.getAll(age, isActive));
+            userServiceAllResponse.setUserList(userService.getAll(age, name, isActive));
         } catch (Exception e) {
             userServiceAllResponse.setUserServiceOutcome(UserServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return new ResponseEntity<>(userServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);

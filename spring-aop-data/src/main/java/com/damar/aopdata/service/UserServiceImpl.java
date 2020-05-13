@@ -6,6 +6,7 @@ import com.damar.aopdata.model.User;
 import com.damar.aopdata.repository.UserRepository;
 import com.damar.aopdata.repository.entity.UserEntity;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,23 +37,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll(Integer age, Boolean isActive) {
+    public List<User> getAll(Integer age, String name, Boolean isActive) {
         List<UserEntity> userEntityList;
 
         if (Objects.nonNull(isActive)) {
             if (Objects.nonNull(age)) {
-                userEntityList = userRepository.findByActiveAndContact_Age(isActive, age);
-            } else {
-                if (BooleanUtils.isTrue(isActive))
-                    userEntityList = userRepository.findByActiveTrue();
+                if (StringUtils.isNotBlank(name))
+                    userEntityList = userRepository.findByActiveAndContact_AgeAndName(isActive, age, name);
                 else
-                    userEntityList = userRepository.findByActiveFalse();
+                    userEntityList = userRepository.findByActiveAndContact_Age(isActive, age);
+            } else {
+                if (StringUtils.isNotBlank(name)) {
+                    userEntityList = userRepository.findByActiveAndName(isActive, name);
+                } else {
+                    if (BooleanUtils.isTrue(isActive))
+                        userEntityList = userRepository.findByActiveTrue();
+                    else
+                        userEntityList = userRepository.findByActiveFalse();
+                }
             }
         } else {
-            if (Objects.nonNull(age))
-                userEntityList = userRepository.findByContact_Age(age);
-            else
-                userEntityList = userRepository.findAll();
+            if (Objects.nonNull(age)) {
+                if (StringUtils.isNotBlank(name))
+                    userEntityList = userRepository.findByContact_AgeAndName(age, name);
+                else
+                    userEntityList = userRepository.findByContact_Age(age);
+            } else {
+                if (StringUtils.isNotBlank(name))
+                    userEntityList = userRepository.findByName(name);
+                else
+                    userEntityList = userRepository.findAll();
+            }
         }
 
         List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
@@ -94,14 +109,6 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
                 .collect(Collectors.toList());
 
-        return userList;
-    }
-
-    @Override
-    public List<User> getUserByName(String name) {
-        List<UserEntity> userEntityList = userRepository.findByName(name);
-        List<User> userList = userEntityList.stream().map(entity -> mapper.map(entity, User.class))
-                .collect(Collectors.toList());
         return userList;
     }
 

@@ -13,6 +13,12 @@ import java.util.Arrays;
 @Slf4j
 public class AspectRepositoryAccess {
 
+    @Before("within(com.damar.aopdata.repository..*)")
+    public void accessToRepository(JoinPoint joinPoint){
+        String methodName = joinPoint.getSignature().toShortString();
+        log.info("ACCESS to REPOSITORY: {} | args: {}", methodName);
+    }
+
     @Before("execution(* com.damar.aopdata.repository..delete*(..))")
     public void deleteMethodExecution(JoinPoint joinPoint){
         String methodName = joinPoint.getSignature().toShortString();

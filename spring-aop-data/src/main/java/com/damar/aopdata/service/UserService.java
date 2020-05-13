@@ -10,7 +10,7 @@ public interface UserService {
 
     User getById(Long id) throws UserNotFoundException;
 
-    List<User> getAll(Integer age, Boolean isActive);
+    List<User> getAll(Integer age, String name, Boolean isActive);
 
     User updateUser(User user) throws UserNotFoundException;
 
@@ -19,7 +19,5 @@ public interface UserService {
     void deleteUser(Long id) throws UserNotFoundException;
 
     List<User> getAllByMinMaxAge(Integer minAge, Integer maxAge, Boolean equal);
-
-    List<User> getUserByName(String name);
 
 }

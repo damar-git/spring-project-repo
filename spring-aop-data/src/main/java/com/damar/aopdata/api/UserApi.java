@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user-api")
 public interface UserApi {
 
-    @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserServiceResponse> getUserById(@ApiParam(value = "the user id", name = "userId")
-                                                    @RequestParam(value = "userId") Long userId);
+                                                    @PathVariable(value = "id") Long userId);
 
     @PutMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserServiceResponse> updateUser(@ApiParam(value = "the user object", name = "user")
@@ -24,21 +24,19 @@ public interface UserApi {
     ResponseEntity<UserServiceResponse> saveUser(@ApiParam(value = "the user object", name = "user")
                                                  @RequestBody User user);
 
-    @DeleteMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserServiceResponse> deleteUser(@ApiParam(value = "the user id", name = "userId")
-                                                   @RequestParam(value = "userId") Long userId);
+                                                   @PathVariable(value = "id") Long userId);
 
-    @GetMapping(value = "/all/allUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserServiceAllResponse> getAllUser(@ApiParam(value = "the user age", name = "age")
                                                       @RequestParam(value = "age", required = false) Integer age,
+                                                      @ApiParam(value = "the user name", name = "name")
+                                                      @RequestParam(value = "name", required = false) String name,
                                                       @ApiParam(value = "indicates whether the user should be active or not",
                                                               name = "isActive") @RequestParam(value = "isActive", required = false) Boolean isActive);
 
-    @GetMapping(value = "/all/allUserByName", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<UserServiceAllResponse> getAllUserByName(@ApiParam(value = "the user name", name = "name")
-                                                         @RequestParam(value = "name") String name);
-
-    @GetMapping(value = "/all/allUserByMinMaxAge", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all/age", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserServiceAllResponse> getAllUserByMinMaxAge(@ApiParam(value = "the user max age", name = "maxAge")
                                                              @RequestParam(value = "maxAge") Integer maxAge,
                                                              @ApiParam(value = "the user min age", name = "minAge")
