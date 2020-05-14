@@ -11,7 +11,7 @@ import java.util.Arrays;
 @Component
 @Aspect
 @Slf4j
-public class AspectRepositoryAccess {
+public class AspectRepositoryLayer {
 
     @Before("within(com.damar.aopdata.repository..*)")
     public void accessToRepository(JoinPoint joinPoint){

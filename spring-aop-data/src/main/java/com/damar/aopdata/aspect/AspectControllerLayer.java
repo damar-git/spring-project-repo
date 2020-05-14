@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Component
 @Aspect
 @Slf4j
-public class AspectController {
+public class AspectControllerLayer {
 
     @Autowired
     private AuthorizationService userServiceSecurity;
