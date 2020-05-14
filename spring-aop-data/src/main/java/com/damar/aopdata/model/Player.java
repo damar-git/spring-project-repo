@@ -3,14 +3,16 @@ package com.damar.aopdata.model;
 import lombok.Data;
 
 @Data
-public class User {
+public class Player {
 
-    private long userId;
+    private long playerId;
 
     private String name;
 
+    private String surname;
+
     private Boolean active;
 
-    private Contact contact;
+    private PlayerDetail playerDetail;
 
 }

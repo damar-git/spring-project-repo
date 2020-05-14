@@ -15,11 +15,11 @@ import java.util.Arrays;
 public class AspectControllerLayer {
 
     @Autowired
-    private AuthorizationService userServiceSecurity;
+    private AuthorizationService playerServiceSecurity;
 
     @Before("within(com.damar.aopdata.controller..*)")
     public void beforeExecution(JoinPoint joinPoint){
-        userServiceSecurity.checkAccessAuthorization();
+        playerServiceSecurity.checkAccessAuthorization();
 
         String methodName = joinPoint.getSignature().toShortString();
         String args = Arrays.asList(joinPoint.getArgs()).toString();
@@ -34,10 +34,10 @@ public class AspectControllerLayer {
         log.info("END method: {} | args: {}", methodName, args);
     }
 
-    @Before("execution(* com.damar.aopdata.controller.UserController.getUserById(..))")
-    public void getUserByIdExecution(JoinPoint joinPoint){
+    @Before("execution(* com.damar.aopdata.controller.PlayerController.getPlayerById(..))")
+    public void getPlayerByIdExecution(JoinPoint joinPoint){
         String args = Arrays.asList(joinPoint.getArgs()).toString();
-        log.info("ACCESS to method: getUserById | args: {}", args);
+        log.info("ACCESS to method: getPlayerById | args: {}", args);
     }
 
 }

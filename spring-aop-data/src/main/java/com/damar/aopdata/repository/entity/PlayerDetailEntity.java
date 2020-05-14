@@ -5,17 +5,17 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "T_CONTACT")
+@Table(name = "T_PLAYER_DETAIL")
 @Data
-public class ContactEntity {
+public class PlayerDetailEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CONTACT_ID")
-    private long contactId;
+    @Column(name = "PLAYER_DETAIL_ID")
+    private long playerDetailId;
 
-    @Column(name = "EMAIL_ADDRESS")
-    private String email;
+    @Column(name = "TEAM")
+    private String team;
 
     @Column(name = "AGE")
     private Integer age;
