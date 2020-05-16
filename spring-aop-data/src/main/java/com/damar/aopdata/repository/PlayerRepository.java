@@ -11,7 +11,8 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
 
     List<PlayerEntity> findByActiveAndPlayerDetail_Age(Boolean active, Integer age);
 
-    List<PlayerEntity> findByActiveAndPlayerDetail_AgeAndNameContainingIgnoreCase(Boolean active, Integer age, String name);
+    List<PlayerEntity> findByActiveAndPlayerDetail_AgeAndNameContainingIgnoreCase
+            (Boolean active, Integer age, String name);
 
     List<PlayerEntity> findByActiveAndNameContainingIgnoreCase(Boolean active, String name);
 
@@ -19,7 +20,29 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
 
     List<PlayerEntity> findByNameContainingIgnoreCase(String name);
 
+    List<PlayerEntity> findBySurnameContainingIgnoreCase(String surname);
+
     List<PlayerEntity> findByPlayerDetail_AgeAndNameContainingIgnoreCase(Integer age, String name);
+
+    List<PlayerEntity> findByPlayerDetail_AgeAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase
+            (Integer age, String name, String surname);
+
+    List<PlayerEntity> findByPlayerDetail_AgeAndSurnameContainingIgnoreCase(Integer age, String surname);
+
+    List<PlayerEntity> findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(String name, String surname);
+
+    List<PlayerEntity> findByActiveAndPlayerDetail_AgeAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase
+            (Boolean active, Integer age, String name, String surname);
+
+    List<PlayerEntity> findByActiveAndPlayerDetail_AgeAndSurnameContainingIgnoreCase
+            (Boolean active, Integer age, String surname);
+
+    List<PlayerEntity> findByActiveAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase
+            (Boolean active, String name, String surname);
+
+    List<PlayerEntity> findByActiveTrueAndSurnameContainingIgnoreCase(String surname);
+
+    List<PlayerEntity> findByActiveFalseAndSurnameContainingIgnoreCase(String surname);
 
     List<PlayerEntity> findByActiveTrue();
 

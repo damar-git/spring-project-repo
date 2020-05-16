@@ -37,41 +37,111 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> getAll(Integer age, String name, Boolean isActive) {
+    public List<Player> getAll(Integer age, String name, String surname, Boolean isActive) {
         List<PlayerEntity> playerEntityList;
 
         if (Objects.nonNull(isActive)) {
-            if (Objects.nonNull(age)) {
-                if (StringUtils.isNotBlank(name))
-                    playerEntityList = playerRepository.findByActiveAndPlayerDetail_AgeAndNameContainingIgnoreCase(isActive, age, name);
-                else
-                    playerEntityList = playerRepository.findByActiveAndPlayerDetail_Age(isActive, age);
-            } else {
-                if (StringUtils.isNotBlank(name)) {
-                    playerEntityList = playerRepository.findByActiveAndNameContainingIgnoreCase(isActive, name);
-                } else {
-                    if (BooleanUtils.isTrue(isActive))
-                        playerEntityList = playerRepository.findByActiveTrue();
-                    else
-                        playerEntityList = playerRepository.findByActiveFalse();
-                }
-            }
+            playerEntityList = findAllByActiveNotNull(age, name, surname, isActive);
         } else {
-            if (Objects.nonNull(age)) {
-                if (StringUtils.isNotBlank(name))
-                    playerEntityList = playerRepository.findByPlayerDetail_AgeAndNameContainingIgnoreCase(age, name);
-                else
-                    playerEntityList = playerRepository.findByPlayerDetail_Age(age);
-            } else {
-                if (StringUtils.isNotBlank(name))
-                    playerEntityList = playerRepository.findByNameContainingIgnoreCase(name);
-                else
-                    playerEntityList = playerRepository.findAll();
-            }
+            playerEntityList = findAllByActiveNull(age, name, surname);
         }
 
         return playerEntityList.stream().map(entity -> mapper.map(entity, Player.class))
                 .collect(Collectors.toList());
+    }
+
+    private List<PlayerEntity> findAllByActiveNotNull(Integer age, String name, String surname, Boolean isActive) {
+        if (Objects.nonNull(age)) {
+            return findByAgeNotNullAndActiveNotNull(isActive, age, name, surname);
+        } else {
+            return findByAgeNullAndActiveNotNull(isActive, name, surname);
+        }
+    }
+
+    private List<PlayerEntity> findAllByActiveNull(Integer age, String name, String surname) {
+        if (Objects.nonNull(age)) {
+            return findByAgeNotNullAndActiveNull(age, name, surname);
+        } else {
+            return findByAgeNullAndActiveNull(name, surname);
+        }
+    }
+
+    private List<PlayerEntity> findByAgeNotNullAndActiveNull(Integer age, String name, String surname) {
+        if (StringUtils.isNotBlank(name)) {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.
+                        findByPlayerDetail_AgeAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(age, name, surname);
+            else
+                return playerRepository.findByPlayerDetail_AgeAndNameContainingIgnoreCase(age, name);
+        } else {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.findByPlayerDetail_AgeAndSurnameContainingIgnoreCase(age, surname);
+            else
+                return playerRepository.findByPlayerDetail_Age(age);
+        }
+    }
+
+    private List<PlayerEntity> findByAgeNullAndActiveNull(String name, String surname) {
+        if (StringUtils.isNotBlank(name)) {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(name, surname);
+            else
+                return playerRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.findBySurnameContainingIgnoreCase(surname);
+            else
+                return playerRepository.findAll();
+        }
+    }
+
+    private List<PlayerEntity> findByAgeNotNullAndActiveNotNull(Boolean isActive, Integer age, String name, String surname) {
+        if (StringUtils.isNotBlank(name)) {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.
+                        findByActiveAndPlayerDetail_AgeAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(isActive, age, name, surname);
+            else
+                return playerRepository.
+                        findByActiveAndPlayerDetail_AgeAndNameContainingIgnoreCase(isActive, age, name);
+        } else {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.findByActiveAndPlayerDetail_AgeAndSurnameContainingIgnoreCase(isActive, age, surname);
+            else
+                return playerRepository.findByActiveAndPlayerDetail_Age(isActive, age);
+        }
+    }
+
+    private List<PlayerEntity> findByAgeNullAndActiveNotNull(Boolean isActive, String name, String surname) {
+        if (StringUtils.isNotBlank(name)) {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.
+                        findByActiveAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(isActive, name, surname);
+            else
+                return playerRepository.findByActiveAndNameContainingIgnoreCase(isActive, name);
+        } else {
+            if (StringUtils.isNotBlank(surname)) {
+                if (BooleanUtils.isTrue(isActive))
+                    return playerRepository.findByActiveTrueAndSurnameContainingIgnoreCase(surname);
+                else
+                    return playerRepository.findByActiveFalseAndSurnameContainingIgnoreCase(surname);
+            } else {
+                if (BooleanUtils.isTrue(isActive))
+                    return playerRepository.findByActiveTrue();
+                else
+                    return playerRepository.findByActiveFalse();
+            }
+        }
+    }
+
+    private List<PlayerEntity> findByAgeAndActiveNull(String name, String surname) {
+        if (StringUtils.isNotBlank(name)) {
+            if (StringUtils.isNotBlank(surname))
+                return playerRepository.findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(name, surname);
+            else
+                return playerRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            return playerRepository.findAll();
+        }
     }
 
     @Override

@@ -41,6 +41,8 @@ public interface PlayerApi {
                                                           @RequestParam(value = "age", required = false) Integer age,
                                                           @ApiParam(value = "the player name")
                                                           @RequestParam(value = "name", required = false) String name,
+                                                          @ApiParam(value = "the player surname")
+                                                          @RequestParam(value = "surname", required = false) String surname,
                                                           @ApiParam(value = "indicates whether the player should be active or not")
                                                           @RequestParam(value = "isActive", required = false) Boolean isActive);
 

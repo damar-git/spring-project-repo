@@ -39,10 +39,10 @@ public class PlayerController implements PlayerApi {
     }
 
     @Override
-    public ResponseEntity<PlayerServiceAllResponse> getAllPlayer(Integer age, String name, Boolean isActive) {
+    public ResponseEntity<PlayerServiceAllResponse> getAllPlayer(Integer age, String name, String surname, Boolean isActive) {
         PlayerServiceAllResponse playerServiceAllResponse = new PlayerServiceAllResponse();
         try {
-            playerServiceAllResponse.setPlayerList(playerService.getAll(age, name, isActive));
+            playerServiceAllResponse.setPlayerList(playerService.getAll(age, name, surname, isActive));
         } catch (Exception e) {
             playerServiceAllResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return new ResponseEntity<>(playerServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -10,7 +10,7 @@ public interface PlayerService {
 
     Player getById(Long id) throws PlayerNotFoundException;
 
-    List<Player> getAll(Integer age, String name, Boolean isActive);
+    List<Player> getAll(Integer age, String name, String surname, Boolean isActive);
 
     Player updatePlayer(Player player) throws PlayerNotFoundException;
 
