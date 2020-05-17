@@ -133,17 +133,6 @@ public class PlayerServiceImpl implements PlayerService {
         }
     }
 
-    private List<PlayerEntity> findByAgeAndActiveNull(String name, String surname) {
-        if (StringUtils.isNotBlank(name)) {
-            if (StringUtils.isNotBlank(surname))
-                return playerRepository.findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(name, surname);
-            else
-                return playerRepository.findByNameContainingIgnoreCase(name);
-        } else {
-            return playerRepository.findAll();
-        }
-    }
-
     @Override
     public Player updatePlayer(Player player) throws PlayerNotFoundException {
         if (BooleanUtils.isFalse(checkIfPlayerExists(player.getPlayerId())))
