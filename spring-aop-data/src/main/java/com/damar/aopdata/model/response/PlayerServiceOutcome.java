@@ -1,9 +1,9 @@
-package com.damar.aopdata.model;
+package com.damar.aopdata.model.response;
 
 import lombok.Data;
 
 @Data
-public class UserServiceOutcome {
+public class PlayerServiceOutcome {
 
     private String additionalInfo;
 
