@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .tags(new Tag(TAG_1, "Everything related to the Player Api"))
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.damar.aopdata"))
                 .paths(PathSelectors.any())
                 .build();
     }
