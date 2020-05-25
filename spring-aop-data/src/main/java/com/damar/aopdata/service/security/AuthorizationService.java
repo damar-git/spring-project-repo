@@ -1,4 +1,4 @@
-package com.damar.aopdata.security;
+package com.damar.aopdata.service.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
