@@ -18,18 +18,33 @@ import static com.damar.aopdata.constants.AspectConstants.*;
 @Slf4j
 public class AspectRepositoryLayer {
 
+    /**
+     * Pointcut matching every method that strats with "delete"
+     * within the com.damar.aopdata.repository package
+     */
     @Pointcut("execution(* com.damar.aopdata.repository..delete*(..))")
     public void deleteRepositoryMethodExecution() {
     }
 
+    /**
+     * Pointcut matching every method that strats with "find"
+     * within the com.damar.aopdata.repository package
+     */
     @Pointcut("execution(* com.damar.aopdata.repository..find*(..))")
     public void findRepositoryMethodExecution() {
     }
 
+    /**
+     * Pointcut matching every method within the com.damar.aopdata.repository package
+     */
     @Pointcut("execution (* com.damar.aopdata.repository..*(..))")
     public void repositoryExecution(){
     }
 
+    /**
+     * Action taken before the repositoryExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @Before("repositoryExecution()")
     public void accessToRepository(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().toShortString();
@@ -38,6 +53,10 @@ public class AspectRepositoryLayer {
         log.info(ACCESS_LOG + " repository: {} | args: {}", methodName, args);
     }
 
+    /**
+     * Action taken around the findRepositoryMethodExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @Around("findRepositoryMethodExecution()")
     public Object aroundFindRepository(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().toShortString();
@@ -54,6 +73,10 @@ public class AspectRepositoryLayer {
         return result;
     }
 
+    /**
+     * Action taken around the deleteRepositoryMethodExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @Around("deleteRepositoryMethodExecution()")
     public Object aroundDeleteRepository(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().toShortString();

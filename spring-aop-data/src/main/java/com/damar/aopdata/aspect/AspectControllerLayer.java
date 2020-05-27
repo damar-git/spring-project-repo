@@ -22,14 +22,24 @@ public class AspectControllerLayer {
     @Autowired
     private AuthorizationService playerServiceSecurity;
 
+    /**
+     * Pointcut matching every execution within the com.damar.aopdata.controller package
+     */
     @Pointcut("within(com.damar.aopdata.controller..*)")
     public void controllerExecution(){
     }
 
+    /**
+     * Pointcut matching every getPlayerById execution within PlayerController class
+     */
     @Pointcut("execution(* com.damar.aopdata.controller.PlayerController.getPlayerById(..))")
     public void getPlayerByIdExecution(){
     }
 
+    /**
+     * Action taken before the controllerExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @Before("controllerExecution()")
     public void beforeExecution(JoinPoint joinPoint){
         playerServiceSecurity.checkAccessAuthorization();
@@ -39,6 +49,10 @@ public class AspectControllerLayer {
         log.info(START_LOG + " method: {} | args: {}", methodName, args);
     }
 
+    /**
+     * Action taken after the controllerExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @After("controllerExecution()")
     public void afterExecution(JoinPoint joinPoint){
         String methodName = joinPoint.getSignature().toShortString();
@@ -46,6 +60,10 @@ public class AspectControllerLayer {
         log.info(END_LOG + " method: {} | args: {}", methodName, args);
     }
 
+    /**
+     * Action taken before the getPlayerByIdExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @Before("getPlayerByIdExecution()")
     public void beforeGetPlayerByIdExecution(JoinPoint joinPoint){
         String args = Arrays.asList(joinPoint.getArgs()).toString();

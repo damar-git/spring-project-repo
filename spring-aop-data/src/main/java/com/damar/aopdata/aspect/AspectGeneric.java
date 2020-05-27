@@ -13,6 +13,10 @@ import static com.damar.aopdata.constants.AspectConstants.ACCESS_LOG;
 @Slf4j
 public class AspectGeneric {
 
+    /**
+     * Action taken before a specific annotation Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
     @Before("within(@org.springframework.stereotype.Repository *)" +
             " || within(@org.springframework.stereotype.Service *)" +
             " || within(@org.springframework.web.bind.annotation.RestController *)")
