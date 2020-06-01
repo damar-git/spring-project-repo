@@ -24,10 +24,14 @@ You can also run the application following those steps:
 
 # References
 
-Further references about the Spring Data/AOP modules:
+Further references about the Spring Data/AOP modules and other project libraries:
 
-https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
+[Spring-Data](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference)
 
-https://docs.spring.io/spring/docs/2.5.x/reference/aop.html
+[Spring-AOP](https://docs.spring.io/spring/docs/2.5.x/reference/aop.html)
+
+[Dozer](https://dozermapper.github.io/)
+
+[Lombok](https://projectlombok.org/)
 
 
