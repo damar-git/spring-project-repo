@@ -66,7 +66,7 @@ public class AspectRepositoryLayer {
         Object result = null;
         try {
             result = joinPoint.proceed();
-            log.info(END_LOG + " method: {} | result: {}", methodName, result);
+            log.info(END_LOG + " repository method: {} | result: {}", methodName, result);
         } catch (Exception e){
             log.error(ERROR_LOG + " AOP aroundFindRepository: ", e);
         }
@@ -86,7 +86,7 @@ public class AspectRepositoryLayer {
         Object result = null;
         try {
             result = joinPoint.proceed();
-            log.info(END_LOG + "+ method: {} | result: {}", methodName, result);
+            log.info(END_LOG + " repository method: {} | result: {}", methodName, result);
         } catch (Exception e){
             log.error(ERROR_LOG + " AOP aroundFindRepository: ", e);
         }
