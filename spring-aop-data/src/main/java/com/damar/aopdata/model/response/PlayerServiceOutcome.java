@@ -7,5 +7,5 @@ public class PlayerServiceOutcome {
 
     private String additionalInfo;
 
-    private int httpResponseCode;
+    private Integer httpResponseCode;
 }

@@ -18,48 +18,79 @@ import static com.damar.aopdata.constants.AspectConstants.*;
 @Slf4j
 public class AspectRepositoryLayer {
 
+    /**
+     * Pointcut matching every method that strats with "delete"
+     * within the com.damar.aopdata.repository package
+     */
     @Pointcut("execution(* com.damar.aopdata.repository..delete*(..))")
     public void deleteRepositoryMethodExecution() {
     }
 
+    /**
+     * Pointcut matching every method that strats with "find"
+     * within the com.damar.aopdata.repository package
+     */
     @Pointcut("execution(* com.damar.aopdata.repository..find*(..))")
     public void findRepositoryMethodExecution() {
     }
 
-    @Around("findRepositoryMethodExecution()")
-    public void aroundFindRepository(ProceedingJoinPoint joinPoint) throws Throwable {
-        String methodName = joinPoint.getSignature().toShortString();
-        String args = Arrays.asList(joinPoint.getArgs()).toString();
-
-        log.info(ACCESS_LOG + " data FIND operation: {} | args: {}", methodName, args);
-        try {
-            Object result = joinPoint.proceed();
-            log.info(END_LOG + " method: {} | result: {}", methodName, result);
-        } catch (Exception e){
-            log.error(ERROR_LOG + " AOP aroundFindRepository: ", e);
-        }
+    /**
+     * Pointcut matching every method within the com.damar.aopdata.repository package
+     */
+    @Pointcut("execution (* com.damar.aopdata.repository..*(..))")
+    public void repositoryExecution(){
     }
 
-    @Around("deleteRepositoryMethodExecution()")
-    public void aroundDeleteRepository(ProceedingJoinPoint joinPoint) throws Throwable {
-        String methodName = joinPoint.getSignature().toShortString();
-        String args = Arrays.asList(joinPoint.getArgs()).toString();
-
-        log.info(WARNING_LOG + " access to a data DELETE operation: {} | args: {}", methodName, args);
-        try {
-            Object result = joinPoint.proceed();
-            log.info(END_LOG + "+ method: {} | result: {}", methodName, result);
-        } catch (Exception e){
-            log.error(ERROR_LOG + " AOP aroundFindRepository: ", e);
-        }
-    }
-
-    @Before("within(com.damar.aopdata.repository..*)")
+    /**
+     * Action taken before the repositoryExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
+    @Before("repositoryExecution()")
     public void accessToRepository(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().toShortString();
         String args = Arrays.asList(joinPoint.getArgs()).toString();
 
         log.info(ACCESS_LOG + " repository: {} | args: {}", methodName, args);
+    }
+
+    /**
+     * Action taken around the findRepositoryMethodExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
+    @Around("findRepositoryMethodExecution()")
+    public Object aroundFindRepository(ProceedingJoinPoint joinPoint) throws Throwable {
+        String methodName = joinPoint.getSignature().toShortString();
+        String args = Arrays.asList(joinPoint.getArgs()).toString();
+
+        log.info(ACCESS_LOG + " data FIND operation: {} | args: {}", methodName, args);
+        Object result = null;
+        try {
+            result = joinPoint.proceed();
+            log.info(END_LOG + " repository method: {} | result: {}", methodName, result);
+        } catch (Exception e){
+            log.error(ERROR_LOG + " AOP aroundFindRepository: ", e);
+        }
+        return result;
+    }
+
+    /**
+     * Action taken around the deleteRepositoryMethodExecution() Pointcut match
+     * @param joinPoint Provides access to information about the Joinpoint
+     */
+    @Around("deleteRepositoryMethodExecution()")
+    public Object aroundDeleteRepository(ProceedingJoinPoint joinPoint) throws Throwable {
+        String methodName = joinPoint.getSignature().toShortString();
+        String args = Arrays.asList(joinPoint.getArgs()).toString();
+
+        log.info(WARNING_LOG + " access to a data DELETE operation: {} | args: {}", methodName, args);
+        Object result = null;
+        try {
+            result = joinPoint.proceed();
+            log.info(END_LOG + " repository method: {} | result: {}", methodName, result);
+        } catch (Exception e){
+            log.error(ERROR_LOG + " AOP aroundFindRepository: ", e);
+        }
+        return result;
     }
 
 }

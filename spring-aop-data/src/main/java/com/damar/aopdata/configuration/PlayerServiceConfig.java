@@ -1,7 +1,7 @@
 package com.damar.aopdata.configuration;
 
-import com.damar.aopdata.repository.entity.PlayerEntity;
 import com.damar.aopdata.model.Player;
+import com.damar.aopdata.repository.entity.PlayerEntity;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.springframework.context.annotation.Bean;

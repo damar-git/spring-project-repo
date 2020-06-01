@@ -125,12 +125,16 @@ public class PlayerServiceImpl implements PlayerService {
                 else
                     return playerRepository.findByActiveFalseAndSurnameContainingIgnoreCase(surname);
             } else {
-                if (BooleanUtils.isTrue(isActive))
-                    return playerRepository.findByActiveTrue();
-                else
-                    return playerRepository.findByActiveFalse();
+                return findByActive(isActive);
             }
         }
+    }
+
+    private List<PlayerEntity> findByActive(Boolean isActive) {
+        if (BooleanUtils.isTrue(isActive))
+            return playerRepository.findByActiveTrue();
+        else
+            return playerRepository.findByActiveFalse();
     }
 
     @Override
