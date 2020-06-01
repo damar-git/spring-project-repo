@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class AuthorizationService {
 
     public void checkAccessAuthorization(){
-        log.info("CHECK api access authorization...");
-        log.info("CHECK api access: AUTHORIZED");
+        log.info("[CHECK] Api access: checking authorization...");
+        log.info("[CHECK] Api access: AUTHORIZED");
     }
 }
