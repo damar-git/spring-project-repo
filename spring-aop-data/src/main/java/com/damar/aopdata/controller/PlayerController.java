@@ -8,6 +8,7 @@ import com.damar.aopdata.model.response.PlayerServiceAllResponse;
 import com.damar.aopdata.model.response.PlayerServiceResponse;
 import com.damar.aopdata.service.PlayerService;
 import com.damar.aopdata.utils.PlayerServiceUtils;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,16 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.damar.aopdata.constants.ErrorConstants.NO_PLAYER_FOUND_ERROR_MSG;
 
-@Slf4j
 @RestController
+@Slf4j
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class PlayerController implements PlayerApi {
 
     private PlayerService playerService;
-
-    @Autowired
-    public PlayerController(PlayerService playerService) {
-        this.playerService = playerService;
-    }
 
     public ResponseEntity<PlayerServiceResponse> getPlayerById(Long playerId) {
         PlayerServiceResponse playerServiceResponse = new PlayerServiceResponse();

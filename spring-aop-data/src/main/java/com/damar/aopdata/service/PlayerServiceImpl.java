@@ -5,6 +5,7 @@ import com.damar.aopdata.exception.PlayerNotFoundException;
 import com.damar.aopdata.model.Player;
 import com.damar.aopdata.repository.PlayerRepository;
 import com.damar.aopdata.repository.entity.PlayerEntity;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
@@ -16,17 +17,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class PlayerServiceImpl implements PlayerService {
 
     private DozerBeanMapper mapper;
 
     private PlayerRepository playerRepository;
-
-    @Autowired
-    public PlayerServiceImpl(DozerBeanMapper mapper, PlayerRepository playerRepository) {
-        this.mapper = mapper;
-        this.playerRepository = playerRepository;
-    }
 
     @Override
     public Player getById(Long id) throws PlayerNotFoundException {
