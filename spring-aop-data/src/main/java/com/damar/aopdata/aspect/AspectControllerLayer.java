@@ -1,6 +1,7 @@
 package com.damar.aopdata.aspect;
 
 import com.damar.aopdata.service.security.AuthorizationService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -17,9 +18,9 @@ import static com.damar.aopdata.constants.AspectConstants.*;
 @Component
 @Aspect
 @Slf4j
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class AspectControllerLayer {
 
-    @Autowired
     private AuthorizationService playerServiceSecurity;
 
     /**
