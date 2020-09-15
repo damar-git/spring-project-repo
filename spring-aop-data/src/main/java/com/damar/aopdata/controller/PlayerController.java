@@ -4,7 +4,7 @@ package com.damar.aopdata.controller;
 import com.damar.aopdata.api.PlayerApi;
 import com.damar.aopdata.exception.PlayerNotFoundException;
 import com.damar.aopdata.model.Player;
-import com.damar.aopdata.model.response.PlayerServiceAllResponse;
+import com.damar.aopdata.model.response.PlayerServiceListResponse;
 import com.damar.aopdata.model.response.PlayerServiceResponse;
 import com.damar.aopdata.service.PlayerService;
 import com.damar.aopdata.utils.PlayerServiceUtils;
@@ -29,12 +29,12 @@ public class PlayerController implements PlayerApi {
         try {
             playerServiceResponse.setPlayer(playerService.getById(playerId));
         } catch (PlayerNotFoundException e) {
-            log.error("[getPlayerById] PlayerNotFoundException: ", e);
+            log.error("[PlayerController | getPlayerById] PlayerNotFoundException: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
                     HttpStatus.NOT_FOUND));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(playerServiceResponse);
         } catch (Exception e) {
-            log.error("[getPlayerById] Exception: ", e);
+            log.error("[PlayerController | getPlayerById] Exception: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(playerServiceResponse);
         }
@@ -43,17 +43,17 @@ public class PlayerController implements PlayerApi {
     }
 
     @Override
-    public ResponseEntity<PlayerServiceAllResponse> getAllPlayer(Integer age, String name, String surname, Boolean isActive) {
-        PlayerServiceAllResponse playerServiceAllResponse = new PlayerServiceAllResponse();
+    public ResponseEntity<PlayerServiceListResponse> getAllPlayer(Integer age, String name, String surname, Boolean isActive) {
+        PlayerServiceListResponse playerServiceListResponse = new PlayerServiceListResponse();
         try {
-            playerServiceAllResponse.setPlayerList(playerService.getAll(age, name, surname, isActive));
+            playerServiceListResponse.setPlayerList(playerService.getAll(age, name, surname, isActive));
         } catch (Exception e) {
-            log.error("[getAllPlayer] Exception: ", e);
-            playerServiceAllResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
-            return new ResponseEntity<>(playerServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("[PlayerController | getAllPlayer] Exception: ", e);
+            playerServiceListResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return new ResponseEntity<>(playerServiceListResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        playerServiceAllResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
-        return new ResponseEntity<>(playerServiceAllResponse, HttpStatus.OK);
+        playerServiceListResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(playerServiceListResponse, HttpStatus.OK);
     }
 
     public ResponseEntity<PlayerServiceResponse> updatePlayer(Player player) {
@@ -61,12 +61,12 @@ public class PlayerController implements PlayerApi {
         try {
             playerServiceResponse.setPlayer(playerService.updatePlayer(player));
         } catch (PlayerNotFoundException e) {
-            log.error("[updatePlayer] PlayerNotFoundException: ", e);
+            log.error("[PlayerController | updatePlayer] PlayerNotFoundException: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
                     HttpStatus.NOT_FOUND));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            log.error("[updatePlayer] Exception: ", e);
+            log.error("[PlayerController | updatePlayer] Exception: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -79,7 +79,7 @@ public class PlayerController implements PlayerApi {
         try {
             playerServiceResponse.setPlayer(playerService.savePlayer(player));
         } catch (Exception e) {
-            log.error("[savePlayer] Exception: ", e);
+            log.error("[PlayerController | savePlayer] Exception: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -92,12 +92,12 @@ public class PlayerController implements PlayerApi {
         try {
             playerService.deletePlayer(id);
         } catch (PlayerNotFoundException e) {
-            log.error("[deletePlayer] PlayerNotFoundException: ", e);
+            log.error("[PlayerController | deletePlayer] PlayerNotFoundException: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
                     HttpStatus.NOT_FOUND));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            log.error("[deletePlayer] Exception: ", e);
+            log.error("[PlayerController | deletePlayer] Exception: ", e);
             playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -106,17 +106,17 @@ public class PlayerController implements PlayerApi {
     }
 
     @Override
-    public ResponseEntity<PlayerServiceAllResponse> getAllPlayerByMinMaxAge(Integer maxAge, Integer minAge, Boolean equal) {
-        PlayerServiceAllResponse playerServiceAllResponse = new PlayerServiceAllResponse();
+    public ResponseEntity<PlayerServiceListResponse> getAllPlayerByMinMaxAge(Integer maxAge, Integer minAge, Boolean equal) {
+        PlayerServiceListResponse playerServiceListResponse = new PlayerServiceListResponse();
         try {
-            playerServiceAllResponse.setPlayerList(playerService.getAllByMinMaxAge(minAge, maxAge, equal));
+            playerServiceListResponse.setPlayerList(playerService.getAllByMinMaxAge(minAge, maxAge, equal));
         } catch (Exception e){
             log.error("[getAllPlayerByMinMaxAge] Exception: ", e);
-            playerServiceAllResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
-            return new ResponseEntity<>(playerServiceAllResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+            playerServiceListResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.INTERNAL_SERVER_ERROR));
+            return new ResponseEntity<>(playerServiceListResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        playerServiceAllResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
-        return new ResponseEntity<>(playerServiceAllResponse, HttpStatus.OK);
+        playerServiceListResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        return new ResponseEntity<>(playerServiceListResponse, HttpStatus.OK);
     }
 
 }

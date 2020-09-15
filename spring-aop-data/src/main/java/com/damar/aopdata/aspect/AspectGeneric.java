@@ -17,11 +17,9 @@ public class AspectGeneric {
      * Action taken before a specific annotation Pointcut match
      * @param joinPoint Provides access to information about the Joinpoint
      */
-    @Before("within(@org.springframework.stereotype.Repository *)" +
-            " || within(@org.springframework.stereotype.Service *)" +
-            " || within(@org.springframework.web.bind.annotation.RestController *)")
+    @Before("within(@org.springframework.stereotype.Service *)")
     public void springBeanPointcut(JoinPoint joinPoint) {
-        log.info(ACCESS_LOG + " Spring component");
+        log.info(ACCESS_LOG + " Spring @Service component: " + joinPoint.getSignature());
     }
 
 }

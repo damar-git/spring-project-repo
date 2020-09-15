@@ -40,9 +40,7 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     List<PlayerEntity> findByActiveAndNameContainingIgnoreCaseAndSurnameContainingIgnoreCase
             (Boolean active, String name, String surname);
 
-    List<PlayerEntity> findByActiveTrueAndSurnameContainingIgnoreCase(String surname);
-
-    List<PlayerEntity> findByActiveFalseAndSurnameContainingIgnoreCase(String surname);
+    List<PlayerEntity> findByActiveAndSurnameContainingIgnoreCase(Boolean active, String surname);
 
     List<PlayerEntity> findByActiveTrue();
 

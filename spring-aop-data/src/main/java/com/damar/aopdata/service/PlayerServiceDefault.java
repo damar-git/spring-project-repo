@@ -4,32 +4,96 @@ package com.damar.aopdata.service;
 import com.damar.aopdata.exception.PlayerNotFoundException;
 import com.damar.aopdata.model.Player;
 import com.damar.aopdata.repository.PlayerRepository;
+import com.damar.aopdata.repository.entity.PlayerDetailEntity;
 import com.damar.aopdata.repository.entity.PlayerEntity;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @Autowired)
-public class PlayerServiceImpl implements PlayerService {
+public class PlayerServiceDefault implements PlayerService {
 
     private DozerBeanMapper mapper;
 
     private PlayerRepository playerRepository;
 
     @Override
-    public Player getById(Long id) throws PlayerNotFoundException {
+    public Player getById(Long id) {
         PlayerEntity playerEntity = playerRepository.findById(id).orElse(null);
         if (Objects.isNull(playerEntity))
             throw new PlayerNotFoundException();
         return mapper.map(playerEntity, Player.class);
+    }
+
+    @Override
+    public Player updatePlayer(Player player) {
+        if (BooleanUtils.isFalse(checkIfPlayerExists(player.getPlayerId())))
+            throw new PlayerNotFoundException();
+        PlayerEntity toUpdate = playerRepository.save(mapper.map(player, PlayerEntity.class));
+        return mapper.map(toUpdate, Player.class);
+    }
+
+    @Override
+    public Player savePlayer(Player player) {
+        PlayerEntity newEntity = playerRepository.save(mapper.map(player, PlayerEntity.class));
+        return mapper.map(newEntity, Player.class);
+    }
+
+    @Override
+    public void deletePlayer(Long id) throws PlayerNotFoundException {
+        PlayerEntity toDelete = playerRepository.findById(id).orElse(null);
+        if (Objects.isNull(toDelete))
+            throw new PlayerNotFoundException();
+        playerRepository.delete(toDelete);
+    }
+
+    /**
+     * Using simple Spring Data queries doesn’t scale well, as for each new parameter,
+     * the amount of queries would increase significantly.
+     * <p>
+     * In some cases, rather than have static one, you should use a dynamic filtering process
+     * that allows you to have more control over your queries.
+     * The Spring Data Example API is useful for this purpose.
+     * <p>
+     * Below I added an updated version of the getAll method that scales much better.
+     */
+    public List<Player> getAllExampleAPI(Integer age, String name, String surname, Boolean isActive) {
+
+        PlayerEntity playerEntity = new PlayerEntity();
+        playerEntity.setActive(isActive);
+        playerEntity.setName(name);
+        playerEntity.setSurname(surname);
+        PlayerDetailEntity playerDetailEntity = new PlayerDetailEntity();
+        playerDetailEntity.setAge(age);
+        playerEntity.setPlayerDetail(playerDetailEntity);
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matchingAll()
+                .withMatcher("name", ignoreCase())
+                .withMatcher("surname", ignoreCase());
+
+        List<PlayerEntity> playerEntityList = playerRepository.findAll(Example.of(playerEntity, matcher));
+
+        return Optional.of(playerEntityList)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(entity -> mapper.map(entity, Player.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -42,7 +106,10 @@ public class PlayerServiceImpl implements PlayerService {
             playerEntityList = findAllByActiveNull(age, name, surname);
         }
 
-        return playerEntityList.stream().map(entity -> mapper.map(entity, Player.class))
+        return Optional.of(playerEntityList)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(entity -> mapper.map(entity, Player.class))
                 .collect(Collectors.toList());
     }
 
@@ -116,10 +183,7 @@ public class PlayerServiceImpl implements PlayerService {
                 return playerRepository.findByActiveAndNameContainingIgnoreCase(isActive, name);
         } else {
             if (StringUtils.isNotBlank(surname)) {
-                if (BooleanUtils.isTrue(isActive))
-                    return playerRepository.findByActiveTrueAndSurnameContainingIgnoreCase(surname);
-                else
-                    return playerRepository.findByActiveFalseAndSurnameContainingIgnoreCase(surname);
+                return playerRepository.findByActiveAndSurnameContainingIgnoreCase(isActive, surname);
             } else {
                 return findByActive(isActive);
             }
@@ -134,28 +198,6 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player updatePlayer(Player player) throws PlayerNotFoundException {
-        if (BooleanUtils.isFalse(checkIfPlayerExists(player.getPlayerId())))
-            throw new PlayerNotFoundException();
-        PlayerEntity toUpdate = playerRepository.save(mapper.map(player, PlayerEntity.class));
-        return mapper.map(toUpdate, Player.class);
-    }
-
-    @Override
-    public Player savePlayer(Player player) {
-        PlayerEntity newEntity = playerRepository.save(mapper.map(player, PlayerEntity.class));
-        return mapper.map(newEntity, Player.class);
-    }
-
-    @Override
-    public void deletePlayer(Long id) throws PlayerNotFoundException {
-        PlayerEntity toDelete = playerRepository.findById(id).orElse(null);
-        if (Objects.isNull(toDelete))
-            throw new PlayerNotFoundException();
-        playerRepository.delete(toDelete);
-    }
-
-    @Override
     public List<Player> getAllByMinMaxAge(Integer minAge, Integer maxAge, Boolean equal) {
         List<PlayerEntity> playerEntityList;
 
@@ -164,7 +206,10 @@ public class PlayerServiceImpl implements PlayerService {
         else
             playerEntityList = playerRepository.findByPlayerDetail_AgeGreaterThanAndPlayerDetail_AgeLessThan(minAge, maxAge);
 
-        return playerEntityList.stream().map(entity -> mapper.map(entity, Player.class))
+        return Optional.of(playerEntityList)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(entity -> mapper.map(entity, Player.class))
                 .collect(Collectors.toList());
     }
 

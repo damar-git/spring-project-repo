@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PlayerDetail {
 
-    private long playerDetailId;
+    private Long playerDetailId;
 
     private String team;
 
