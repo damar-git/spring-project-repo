@@ -21,7 +21,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
 @Service
@@ -33,15 +32,16 @@ public class PlayerServiceDefault implements PlayerService {
     private PlayerRepository playerRepository;
 
     @Override
-    public Player getById(Long id) {
+    public Player getById(Long id) throws PlayerNotFoundException {
         PlayerEntity playerEntity = playerRepository.findById(id).orElse(null);
         if (Objects.isNull(playerEntity))
             throw new PlayerNotFoundException();
+
         return mapper.map(playerEntity, Player.class);
     }
 
     @Override
-    public Player updatePlayer(Player player) {
+    public Player updatePlayer(Player player) throws PlayerNotFoundException {
         if (BooleanUtils.isFalse(checkIfPlayerExists(player.getPlayerId())))
             throw new PlayerNotFoundException();
         PlayerEntity toUpdate = playerRepository.save(mapper.map(player, PlayerEntity.class));

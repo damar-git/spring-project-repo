@@ -1,7 +1,7 @@
 package com.damar.aopdata.exception;
 
 
-public class PlayerNotFoundException extends RuntimeException {
+public class PlayerNotFoundException extends Exception {
 
     public PlayerNotFoundException() {
     }

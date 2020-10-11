@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface PlayerService {
 
-    Player getById(Long id);
+    Player getById(Long id) throws PlayerNotFoundException;
 
     List<Player> getAll(Integer age, String name, String surname, Boolean isActive);
 
-    Player updatePlayer(Player player);
+    Player updatePlayer(Player player) throws PlayerNotFoundException;
 
     Player savePlayer(Player player);
 
-    void deletePlayer(Long id);
+    void deletePlayer(Long id) throws PlayerNotFoundException;
 
     List<Player> getAllByMinMaxAge(Integer minAge, Integer maxAge, Boolean equal);
 
