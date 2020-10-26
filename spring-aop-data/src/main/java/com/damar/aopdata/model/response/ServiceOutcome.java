@@ -3,7 +3,7 @@ package com.damar.aopdata.model.response;
 import lombok.Data;
 
 @Data
-public class PlayerServiceOutcome {
+public class ServiceOutcome {
 
     private String additionalInfo;
 

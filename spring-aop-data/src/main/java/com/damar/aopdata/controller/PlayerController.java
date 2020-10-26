@@ -7,7 +7,7 @@ import com.damar.aopdata.model.Player;
 import com.damar.aopdata.model.response.PlayerServiceListResponse;
 import com.damar.aopdata.model.response.PlayerServiceResponse;
 import com.damar.aopdata.service.PlayerService;
-import com.damar.aopdata.utils.PlayerServiceUtils;
+import com.damar.aopdata.utils.OutcomeUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,68 +24,70 @@ public class PlayerController implements PlayerApi {
 
     private PlayerService playerService;
 
-    public ResponseEntity<PlayerServiceResponse> getPlayerById(Long playerId) {
+    public ResponseEntity<PlayerServiceResponse> getPlayerById(Long playerId, String jwt) {
         PlayerServiceResponse playerServiceResponse = new PlayerServiceResponse();
         try {
             playerServiceResponse.setPlayer(playerService.getById(playerId));
         } catch (PlayerNotFoundException e) {
             log.error("[PlayerController | getPlayerById] PlayerNotFoundException: ", e);
-            playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
+            playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
                     HttpStatus.NOT_FOUND));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(playerServiceResponse);
         }
-        playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(HttpStatus.OK));
         return ResponseEntity.ok(playerServiceResponse);
     }
 
     @Override
-    public ResponseEntity<PlayerServiceListResponse> getAllPlayer(Integer age, String name, String surname, Boolean isActive) {
+    public ResponseEntity<PlayerServiceListResponse> getAllPlayer(Integer age, String name,
+                                                                  String surname, Boolean isActive, String jwt) {
         PlayerServiceListResponse playerServiceListResponse = new PlayerServiceListResponse();
         playerServiceListResponse.setPlayerList(playerService.getAll(age, name, surname, isActive));
-        playerServiceListResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        playerServiceListResponse.setServiceOutcome(OutcomeUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(playerServiceListResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<PlayerServiceResponse> updatePlayer(Player player) {
+    public ResponseEntity<PlayerServiceResponse> updatePlayer(Player player, String jwt) {
         PlayerServiceResponse playerServiceResponse = new PlayerServiceResponse();
         try {
             playerServiceResponse.setPlayer(playerService.updatePlayer(player));
         } catch (PlayerNotFoundException e) {
             log.error("[PlayerController | updatePlayer] PlayerNotFoundException: ", e);
-            playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
+            playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
                     HttpStatus.NOT_FOUND));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.NOT_FOUND);
         }
-        playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(playerServiceResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<PlayerServiceResponse> savePlayer(Player player) {
+    public ResponseEntity<PlayerServiceResponse> savePlayer(Player player, String jwt) {
         PlayerServiceResponse playerServiceResponse = new PlayerServiceResponse();
         playerServiceResponse.setPlayer(playerService.savePlayer(player));
-        playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(playerServiceResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<PlayerServiceResponse> deletePlayer(Long id) {
+    public ResponseEntity<PlayerServiceResponse> deletePlayer(Long id, String jwt) {
         PlayerServiceResponse playerServiceResponse = new PlayerServiceResponse();
         try {
             playerService.deletePlayer(id);
         } catch (PlayerNotFoundException e) {
             log.error("[PlayerController | deletePlayer] PlayerNotFoundException: ", e);
-            playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
+            playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(NO_PLAYER_FOUND_ERROR_MSG,
                     HttpStatus.NOT_FOUND));
             return new ResponseEntity<>(playerServiceResponse, HttpStatus.NOT_FOUND);
         }
-        playerServiceResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        playerServiceResponse.setServiceOutcome(OutcomeUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(playerServiceResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<PlayerServiceListResponse> getAllPlayerByMinMaxAge(Integer maxAge, Integer minAge, Boolean equal) {
+    public ResponseEntity<PlayerServiceListResponse> getAllPlayerByMinMaxAge(Integer maxAge, Integer minAge,
+                                                                             Boolean equal, String jwt) {
         PlayerServiceListResponse playerServiceListResponse = new PlayerServiceListResponse();
         playerServiceListResponse.setPlayerList(playerService.getAllByMinMaxAge(minAge, maxAge, equal));
-        playerServiceListResponse.setPlayerServiceOutcome(PlayerServiceUtils.buildOutcome(HttpStatus.OK));
+        playerServiceListResponse.setServiceOutcome(OutcomeUtils.buildOutcome(HttpStatus.OK));
         return new ResponseEntity<>(playerServiceListResponse, HttpStatus.OK);
     }
 

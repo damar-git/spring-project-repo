@@ -10,5 +10,5 @@ public class PlayerServiceListResponse {
 
     private List<Player> playerList;
 
-    private PlayerServiceOutcome playerServiceOutcome;
+    private ServiceOutcome serviceOutcome;
 }

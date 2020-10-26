@@ -13,12 +13,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    public static final String TAG_1 = "PlayerApi";
+    public static final String TAG_1 = "NBAPortalApi";
+    public static final String TAG_2 = "UserApi";
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .tags(new Tag(TAG_1, "Everything related to the Player Api"))
+                .tags(new Tag(TAG_1, "Everything related to the NBA Portal Api"),
+                        new Tag(TAG_2, "Everything related to the User Api"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.damar.aopdata"))
                 .paths(PathSelectors.any())

@@ -1,13 +1,11 @@
 package com.damar.aopdata.model.response;
 
-import com.damar.aopdata.model.Player;
 import lombok.Data;
 
 @Data
-public class PlayerServiceResponse {
+public class UserLoginResponse {
 
-    private Player player;
+    private String authToken;
 
     private ServiceOutcome serviceOutcome;
-
 }
