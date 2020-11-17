@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.damar.projects</groupId>
-	<artifactId>spring-aop-data</artifactId>
+	<artifactId>spring-project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-aop-data</name>
-	<description>Demo project for Spring AOP and Spring Data</description>
+	<name>spring-project</name>
+	<description>Demo project for Spring Framework</description>
 
 	<properties>
 		<java.version>1.8</java.version>
