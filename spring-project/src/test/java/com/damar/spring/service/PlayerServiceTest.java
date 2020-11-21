@@ -1,6 +1,7 @@
 package com.damar.spring.service;
 
 
+import com.damar.spring.exception.PlayerNotFoundException;
 import com.damar.spring.model.Player;
 import com.damar.spring.repository.PlayerRepository;
 import com.damar.spring.repository.entity.PlayerEntity;
@@ -77,7 +78,7 @@ public class PlayerServiceTest {
         verify(repository, times(1)).findAll();
         verify(mapper, times(3)).map(isA(PlayerEntity.class), eq(Player.class));
         Assertions.assertNotNull(all);
-        Assertions.assertEquals(all.size(), 3);
+        Assertions.assertEquals(3, all.size());
 
     }
 
@@ -102,23 +103,28 @@ public class PlayerServiceTest {
 
     }
 
-//
-//    void when_update_player_thow_exception_if_id_not_found() {
-//
-//        //given
-//        Player toUpdate = new Player();
-//        toUpdate.setPlayerId(1L);
-//
-//        PlayerEntity entityToDelete = new PlayerEntity();
-//
-//
-//        //when
-//        when(repository.findById(same(toUpdate.getPlayerId()))).thenReturn(Optional.of(null));
-//
-//
-//        service.updatePlayer(toUpdate);
-//
-//    }
+    @Test
+    void when_update_player_thow_exception_if_player_not_found() {
+
+        //given
+        Player toUpdate = new Player();
+        toUpdate.setPlayerId(1L);
+
+        //then throw exception
+        Assertions.assertThrows(PlayerNotFoundException.class, () -> service.updatePlayer(toUpdate));
+
+    }
+
+    @Test
+    void when_delete_player_thow_exception_if_player_not_found() {
+
+        //given
+        Long playerId = 1L;
+
+        //then throw exception
+        Assertions.assertThrows(PlayerNotFoundException.class, () -> service.deletePlayer(playerId));
+
+    }
 
 
 }

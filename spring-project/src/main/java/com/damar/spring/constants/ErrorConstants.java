@@ -10,4 +10,6 @@ public class ErrorConstants {
 
     public static final String NO_USER_FOUND_ERROR_MSG = "No user found";
 
+    public static final String EXCEPTION_HANDLER_LOGGER = "[{} | {}] Exception: ";
+
 }

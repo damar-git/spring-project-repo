@@ -33,7 +33,7 @@ public class JwtServiceTest {
     }
 
     @Test
-    void whenGivenParamsThenCreateAndDecodeCorrectJwt() {
+    void when_given_params_then_create_and_decode_correct_jwt() {
 
         //given
         String username = "damar";
@@ -46,4 +46,5 @@ public class JwtServiceTest {
         Assertions.assertEquals(username, claims.getSubject());
         Assertions.assertEquals(issuer, claims.getIssuer());
     }
+
 }
