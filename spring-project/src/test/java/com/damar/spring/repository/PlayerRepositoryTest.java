@@ -38,7 +38,7 @@ public class PlayerRepositoryTest {
         //then
         Assertions.assertNotNull(findEntity);
         Assertions.assertNotNull(findEntity.getPlayerDetail());
-        Assertions.assertEquals(all.size(), 2);
+        Assertions.assertEquals(2, all.size());
     }
 
     @Test
@@ -77,12 +77,12 @@ public class PlayerRepositoryTest {
         playerRepository.save(toUpdate);
 
         //then
-        Assertions.assertEquals(toUpdate.getName(), "Paskal");
-        Assertions.assertEquals(toUpdate.getSurname(), "Siakam");
+        Assertions.assertEquals("Paskal", toUpdate.getName());
+        Assertions.assertEquals("Siakam", toUpdate.getSurname());
     }
 
     @Test
-    void when_delete_player_entity_check_correct_removal(){
+    void when_delete_player_entity_check_correct_removal() {
 
         //given
 
@@ -104,7 +104,7 @@ public class PlayerRepositoryTest {
 
         //then
 
-        Assertions.assertEquals(all.size(), 1);
+        Assertions.assertEquals(1, all.size());
         Assertions.assertFalse(all.contains(toRemove));
         Assertions.assertTrue(all.contains(persisted));
 

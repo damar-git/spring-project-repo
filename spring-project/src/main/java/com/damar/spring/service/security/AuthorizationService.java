@@ -1,5 +1,6 @@
 package com.damar.spring.service.security;
 
+import com.damar.spring.exception.UserNotAuthorizedException;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,7 @@ public class AuthorizationService {
     @Value("${jwt.issuer}")
     private String ISSUER;
 
-    public void checkAccessAuthorization(String jwt){
+    public void checkAccessAuthorization(String jwt) {
         log.info("[CHECK] Api access: checking authorization...");
 
         Claims claims;
@@ -32,14 +33,14 @@ public class AuthorizationService {
         try {
             claims = jwtService.decodeJWT(jwt);
         } catch (Exception e){
-            throw new RuntimeException("Error decoding jwt, setup custom exception");
+            throw new UserNotAuthorizedException("Error decoding jwt, setup custom exception");
         }
 
         String issuer = claims.getIssuer();
         String subject = claims.getSubject();
 
         if (!StringUtils.equals(ISSUER, issuer))
-            throw new RuntimeException("Error matching jwt, setup custom exception");
+            throw new UserNotAuthorizedException("Error matching jwt, setup custom exception");
 
         log.info("[CHECK] Api access: User {} AUTHORIZED", subject);
     }
