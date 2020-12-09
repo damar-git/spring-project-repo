@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
@@ -27,42 +29,41 @@ public class PlayerRepositoryTest {
     void when_save_player_entity_then_find_records() {
 
         // when
-        PlayerEntity p1 = new PlayerEntity();
-        p1.setPlayerDetail(new PlayerDetailEntity());
-        playerRepository.save(p1);
+        PlayerEntity toSave = new PlayerEntity();
+        toSave.setPlayerDetail(new PlayerDetailEntity());
+        playerRepository.save(toSave);
         playerRepository.save(new PlayerEntity());
 
-        PlayerEntity findEntity = playerRepository.findById(p1.getPlayerId()).orElse(null);
+        PlayerEntity toFind = playerRepository.findById(toSave.getPlayerId()).orElse(null);
         List<PlayerEntity> all = playerRepository.findAll();
 
         //then
-        Assertions.assertNotNull(findEntity);
-        Assertions.assertNotNull(findEntity.getPlayerDetail());
+        Assertions.assertNotNull(toFind);
+        Assertions.assertNotNull(toFind.getPlayerDetail());
         Assertions.assertEquals(2, all.size());
     }
 
     @Test
-    void when_save_player_entity_then_check_correct_fields() {
+    void when_save_player_entity_then_check_equals() {
 
         //given
-        PlayerEntity toPersist = new PlayerEntity();
-        toPersist.setName("Karl");
-        toPersist.setSurname("Malone");
-        toPersist.setActive(Boolean.FALSE);
+        PlayerEntity toSave = new PlayerEntity();
+        toSave.setName("Karl");
+        toSave.setSurname("Malone");
+        toSave.setActive(Boolean.FALSE);
 
         // when
-        playerRepository.save(toPersist);
-        PlayerEntity playerEntityById = playerRepository.findById(toPersist.getPlayerId())
+        playerRepository.save(toSave);
+        PlayerEntity toFind = playerRepository.findById(toSave.getPlayerId())
                 .orElse(null);
 
         //then
-        Assertions.assertNotNull(playerEntityById);
-        Assertions.assertEquals(toPersist.getName(), toPersist.getName());
-        Assertions.assertEquals(toPersist.getSurname(), toPersist.getSurname());
+        Assertions.assertNotNull(toFind);
+        Assertions.assertEquals(toSave, toFind);
     }
 
     @Test
-    void when_update_entity_then_check_correct_fields() {
+    void when_update_entity_then_check_equals() {
 
         //given
         PlayerEntity toSave = new PlayerEntity();
@@ -86,18 +87,18 @@ public class PlayerRepositoryTest {
 
         //given
 
-        PlayerEntity toPersist1 = new PlayerEntity();
-        toPersist1.setName("Karl");
-        toPersist1.setSurname("Malone");
+        PlayerEntity toSave1 = new PlayerEntity();
+        toSave1.setName("Karl");
+        toSave1.setSurname("Malone");
 
-        PlayerEntity toPersist2 = new PlayerEntity();
-        toPersist2.setName("Paskal");
-        toPersist2.setSurname("Siakam");
+        PlayerEntity toSave2 = new PlayerEntity();
+        toSave2.setName("Paskal");
+        toSave2.setSurname("Siakam");
 
         //when
 
-        PlayerEntity toRemove = playerRepository.save(toPersist1);
-        PlayerEntity persisted = playerRepository.save(toPersist2);
+        PlayerEntity toRemove = playerRepository.save(toSave1);
+        PlayerEntity persisted = playerRepository.save(toSave2);
 
         playerRepository.delete(toRemove);
         List<PlayerEntity> all = playerRepository.findAll();
