@@ -96,6 +96,9 @@ public class PlayerServiceDefault implements PlayerService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * check the method getAllExampleAPI
+     */
     @Override
     public List<Player> getAll(Integer age, String name, String surname, Boolean isActive) {
         List<PlayerEntity> playerEntityList;

@@ -5,6 +5,10 @@ import org.springframework.http.HttpStatus;
 
 public class OutcomeUtils {
 
+    private OutcomeUtils() {
+
+    }
+
     public static ServiceOutcome buildOutcome(HttpStatus httpStatus) {
         ServiceOutcome serviceOutcome = new ServiceOutcome();
         serviceOutcome.setAdditionalInfo(httpStatus.getReasonPhrase());

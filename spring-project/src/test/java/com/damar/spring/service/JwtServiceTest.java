@@ -8,6 +8,8 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -15,25 +17,16 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @ContextConfiguration(
         classes = {JwtTestConfig.class}, loader = AnnotationConfigContextLoader.class)
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JwtServiceTest {
 
-    @Spy
+    @Autowired
     private JwtService jwtService;
 
-    private String issuer = "app-issuer";
-
-    private String secret = "secret";
-
-    @BeforeAll
-    void before() throws Exception {
-        FieldUtils.writeField(jwtService, "ISSUER", this.issuer, true);
-        FieldUtils.writeField(jwtService, "SECRET_KEY", this.secret, true);
-    }
+    @Value("${jwt.issuer}")
+    private String issuer;
 
     @Test
-    void whenGivenParamsThenCreateAndDecodeCorrectJwt() {
+    void when_given_params_then_create_and_decode_correct_jwt() {
 
         //given
         String username = "damar";
@@ -46,4 +39,5 @@ public class JwtServiceTest {
         Assertions.assertEquals(username, claims.getSubject());
         Assertions.assertEquals(issuer, claims.getIssuer());
     }
+
 }

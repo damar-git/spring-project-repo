@@ -1,4 +1,4 @@
-package com.damar.spring.mapper;
+package com.damar.spring.configuration;
 
 import com.damar.spring.model.Player;
 import com.damar.spring.model.PlayerDetail;
@@ -6,14 +6,16 @@ import com.damar.spring.repository.entity.PlayerEntity;
 import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class DozerMapperTest {
 
-    @Spy
+    @Autowired
     private DozerBeanMapper mapper;
 
     @Test
