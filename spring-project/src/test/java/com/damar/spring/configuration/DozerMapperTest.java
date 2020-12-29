@@ -8,18 +8,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-@SpringBootTest
-public class DozerMapperTest {
+@SpringBootTest(classes = {DefaultServiceConfig.class})
+class DozerMapperTest {
 
     @Autowired
     private DozerBeanMapper mapper;
 
     @Test
-    void when_given_filled_Player_map_PlayerEntity(){
+    void when_given_filled_Player_map_PlayerEntity() {
 
         //given
 
