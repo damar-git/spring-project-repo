@@ -5,22 +5,17 @@ import com.damar.spring.repository.entity.PlayerDetailEntity;
 import com.damar.spring.repository.entity.PlayerEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
 @ContextConfiguration(
         classes = {H2TestConfig.class}, loader = AnnotationConfigContextLoader.class)
 @DataJpaTest
-public class PlayerRepositoryTest {
+class PlayerRepositoryTest {
 
     @Autowired
     private PlayerRepository playerRepository;

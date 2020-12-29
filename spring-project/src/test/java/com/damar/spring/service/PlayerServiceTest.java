@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PlayerServiceTest {
+class PlayerServiceTest {
 
     @InjectMocks
     private PlayerServiceDefault service;
@@ -50,7 +50,6 @@ public class PlayerServiceTest {
         //behaviour
         when(repository.save(any(PlayerEntity.class))).thenReturn(entity);
 
-
         Player saved = service.savePlayer(toSave);
 
         //then
@@ -62,7 +61,7 @@ public class PlayerServiceTest {
     }
 
     @Test
-    void when_given_no_params_find_all_players(){
+    void when_given_no_params_find_all_players() {
         //given
         PlayerEntity p1 = new PlayerEntity();
         PlayerEntity p2 = new PlayerEntity();
