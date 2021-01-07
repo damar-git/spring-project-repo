@@ -1,6 +1,7 @@
 package com.damar.spring.service;
 
 import com.damar.spring.config.JwtTestConfig;
+import com.damar.spring.service.security.AuthorizationService;
 import com.damar.spring.service.security.JwtService;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +14,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @ContextConfiguration(
         classes = {JwtTestConfig.class}, loader = AnnotationConfigContextLoader.class)
-@SpringBootTest
+@SpringBootTest(classes = JwtService.class)
 class JwtServiceTest {
 
     @Autowired

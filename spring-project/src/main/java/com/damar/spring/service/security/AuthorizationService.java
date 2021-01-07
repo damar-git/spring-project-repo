@@ -20,9 +20,6 @@ public class AuthorizationService {
 
     private JwtService jwtService;
 
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
-
     @Value("${jwt.issuer}")
     private String ISSUER;
 
