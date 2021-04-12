@@ -37,7 +37,7 @@ class UserApiTest {
 
         // then
 
-        mockMvc.perform(post(USER_API_PATH + "/sign-up/{username}",
+        mockMvc.perform(post(USER_API_PATH + "/user/{username}/sign-up",
                 "ZXC"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ class UserApiTest {
 
         // then
 
-        mockMvc.perform(get(USER_API_PATH + "/login/{username}",
+        mockMvc.perform(get(USER_API_PATH + "/user/{username}/login",
                 "ZXC"))
                 .andDo(print())
                 .andExpect(status().isOk())
